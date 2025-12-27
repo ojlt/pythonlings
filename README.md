@@ -46,15 +46,7 @@ pythonlings verify
 1. Each exercise file contains a problem description and failing tests
 2. Edit the exercise file to implement the solution
 3. Tests run automatically when you save (in watch mode)
-5. Move on to the next exercise!
 
-## Exercises
-
-30 exercises organized by difficulty:
-
-- **Easy (7)**: strings, lists, math basics
-- **Medium (15)**: dictionaries, file I/O, OOP, recursion
-- **Hard (8)**: graphs, dynamic programming, advanced OOP
 
 ## License
 
