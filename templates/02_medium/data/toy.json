@@ -1,0 +1,32 @@
+{
+    "students": {
+        "1": "John", 
+        "2": "Paul", 
+        "3": "Ringo", 
+        "4": "George",
+        "5": "Freddie",
+        "6": "Brian",
+        "7": "Roger"
+    },
+    "societies": {
+        "1": "Badminton",
+        "2": "Basketball",
+        "3": "Hockey",
+        "4": "Tennis"
+    },
+    "memberships": [
+        {"society": "1", "student": "1"},
+        {"society": "1", "student": "2"},
+        {"society": "1", "student": "3"},
+        {"society": "1", "student": "4"},
+        {"society": "2", "student": "7"},
+        {"society": "2", "student": "5"},
+        {"society": "2", "student": "1"},
+        {"society": "2", "student": "6"},
+        {"society": "3", "student": "1"},
+        {"society": "3", "student": "3"},
+        {"society": "4", "student": "5"},
+        {"society": "4", "student": "3"},
+        {"society": "4", "student": "1"}
+    ]
+}

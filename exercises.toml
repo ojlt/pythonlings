@@ -1,0 +1,374 @@
+# Interviewlings Exercises
+# Based on Imperial College COMP70053 Python Programming Exam
+
+# =============================================================================
+# EASY EXERCISES (7 total)
+# =============================================================================
+
+[[exercises]]
+name = "count_vowels"
+path = "exercises/01_easy/count_vowels.py"
+category = "strings"
+difficulty = "easy"
+description = "Count the number of vowels (a, e, i, o, u) in a string"
+hints = [
+    "Vowels are: a, e, i, o, u",
+    "Loop through each character and check if it's in a set of vowels",
+    "Use the 'in' operator to check membership: if char in 'aeiou'"
+]
+
+[[exercises]]
+name = "longest_word"
+path = "exercises/01_easy/longest_word.py"
+category = "lists"
+difficulty = "easy"
+description = "Find the longest word in a list and return it with its length"
+hints = [
+    "Return a tuple: (word, length)",
+    "Track the longest word seen so far as you iterate",
+    "Use len() to get the length of each word"
+]
+
+[[exercises]]
+name = "filter_e"
+path = "exercises/01_easy/filter_e.py"
+category = "strings"
+difficulty = "easy"
+description = "Remove all words containing the letter 'e' from a string"
+hints = [
+    "Split the string into words using split()",
+    "Filter out words that contain 'e'",
+    "Join the remaining words back with ' '.join()"
+]
+
+[[exercises]]
+name = "count_repeats"
+path = "exercises/01_easy/count_repeats.py"
+category = "strings"
+difficulty = "easy"
+description = "Check if all characters in a word repeat the same number of times"
+hints = [
+    "Count the frequency of each character",
+    "Check if all frequencies are equal",
+    "Return the frequency if equal, 0 otherwise"
+]
+
+[[exercises]]
+name = "convert"
+path = "exercises/01_easy/convert.py"
+category = "math"
+difficulty = "easy"
+description = "Convert seconds to hours, minutes, and seconds"
+hints = [
+    "There are 3600 seconds in an hour, 60 seconds in a minute",
+    "Use integer division (//) and modulo (%)",
+    "Return a tuple: (hours, minutes, seconds)"
+]
+
+[[exercises]]
+name = "flip"
+path = "exercises/01_easy/flip.py"
+category = "2d_arrays"
+difficulty = "easy"
+description = "Flip all values in a grid from 0 to 1 and from 1 to 0"
+hints = [
+    "Iterate through each row and column",
+    "Use 1 - value to flip between 0 and 1",
+    "Return a new grid with the flipped values"
+]
+
+[[exercises]]
+name = "count_palindromes"
+path = "exercises/01_easy/count_palindromes.py"
+category = "math"
+difficulty = "easy"
+description = "Count palindromic numbers in a given range"
+hints = [
+    "A palindrome reads the same forwards and backwards",
+    "Convert numbers to strings to check if they're palindromes",
+    "Compare string with its reverse: s == s[::-1]"
+]
+
+# =============================================================================
+# MEDIUM EXERCISES (15 total)
+# =============================================================================
+
+[[exercises]]
+name = "minmax_swap"
+path = "exercises/02_medium/minmax_swap.py"
+category = "math"
+difficulty = "medium"
+description = "Find min and max numbers possible by swapping exactly two digits"
+hints = [
+    "Convert number to list of digits to manipulate",
+    "For min: find smallest digit that can go to front (not 0)",
+    "For max: find largest digit and move it to earliest position"
+]
+
+[[exercises]]
+name = "invert"
+path = "exercises/02_medium/invert.py"
+category = "dictionaries"
+difficulty = "medium"
+description = "Invert a dictionary so keys become values and values become keys"
+hints = [
+    "Multiple keys may map to the same value",
+    "The inverted dict's values should be sorted lists of original keys",
+    "Use a defaultdict(list) or check if key exists"
+]
+
+[[exercises]]
+name = "group_anagrams"
+path = "exercises/02_medium/group_anagrams.py"
+category = "strings"
+difficulty = "medium"
+description = "Group words that are anagrams of each other"
+hints = [
+    "Anagrams have the same sorted characters",
+    "Use sorted characters as the dictionary key",
+    "Sort the list of words for each key"
+]
+
+[[exercises]]
+name = "roman_to_int"
+path = "exercises/02_medium/roman_to_int.py"
+category = "strings"
+difficulty = "medium"
+description = "Convert a Roman numeral string to an integer"
+hints = [
+    "Map each Roman numeral to its value: I=1, V=5, X=10, L=50, C=100, D=500, M=1000",
+    "If a smaller value appears before a larger one, subtract it",
+    "Otherwise, add the value"
+]
+
+[[exercises]]
+name = "encode"
+path = "exercises/02_medium/encode.py"
+category = "strings"
+difficulty = "medium"
+description = "Perform run-length encoding on a string"
+hints = [
+    "Track current character and its count",
+    "When character changes, append char+count to result",
+    "Don't forget to handle the last group"
+]
+
+[[exercises]]
+name = "decode"
+path = "exercises/02_medium/decode.py"
+category = "strings"
+difficulty = "medium"
+description = "Decode a run-length encoded string"
+hints = [
+    "Parse character followed by number",
+    "Numbers can be more than one digit (e.g., 'A12')",
+    "Repeat each character by its count"
+]
+
+[[exercises]]
+name = "get_error_summary"
+path = "exercises/02_medium/get_error_summary.py"
+category = "file_io"
+difficulty = "medium"
+description = "Parse a log file and summarize ERROR messages"
+hints = [
+    "Each line format: [TIMESTAMP] [LEVEL] MESSAGE",
+    "Filter for lines containing '[ERROR]'",
+    "Count occurrences of each unique error message"
+]
+
+[[exercises]]
+name = "vehicles"
+path = "exercises/02_medium/vehicles.py"
+category = "oop"
+difficulty = "medium"
+description = "Implement a Vehicle class hierarchy with Car and ElectricCar"
+hints = [
+    "Use super().__init__() to call parent constructor",
+    "Override methods to provide specialized behavior",
+    "ElectricCar should override refuel() to return 'Recharging...'"
+]
+
+[[exercises]]
+name = "most_shared_interest"
+path = "exercises/02_medium/most_shared_interest.py"
+category = "json"
+difficulty = "medium"
+description = "Find the pair of students in the most shared societies"
+hints = [
+    "Load JSON with json.load()",
+    "Build a mapping of student pairs to their shared societies",
+    "Find the pair with the maximum number of shared societies"
+]
+
+[[exercises]]
+name = "most_frequent_common_word"
+path = "exercises/02_medium/most_frequent_common_word.py"
+category = "file_io"
+difficulty = "medium"
+description = "Find the most frequent common word across two text files"
+hints = [
+    "Count word frequencies in each file",
+    "Find words that appear in both files",
+    "Calculate average frequency and find the maximum"
+]
+
+[[exercises]]
+name = "store"
+path = "exercises/02_medium/store.py"
+category = "oop"
+difficulty = "medium"
+description = "Implement Store with Products and Offers (OOP)"
+hints = [
+    "Load products from JSON and create Product instances",
+    "PercentageReductionOffer: multiply by (1 - discount)",
+    "BuyNGet1FreeOffer: for every n+1 items, 1 is free"
+]
+
+[[exercises]]
+name = "find_files_by_extension"
+path = "exercises/02_medium/find_files_by_extension.py"
+category = "recursion"
+difficulty = "medium"
+description = "Recursively find all files with a given extension"
+hints = [
+    "Use recursion to traverse the nested directory structure",
+    "Build full paths as you traverse",
+    "Check file type and extension to collect matching files"
+]
+
+[[exercises]]
+name = "university"
+path = "exercises/02_medium/university.py"
+category = "oop"
+difficulty = "medium"
+description = "Model a University with Departments using composition"
+hints = [
+    "Department has lists of professors and students",
+    "University has a list of departments",
+    "Use list comprehensions to gather students across departments"
+]
+
+[[exercises]]
+name = "file_processor"
+path = "exercises/02_medium/file_processor.py"
+category = "oop"
+difficulty = "medium"
+description = "Implement CSV and JSON file processors using polymorphism"
+hints = [
+    "FileProcessor base class with read() and process() methods",
+    "CsvProcessor: split lines by comma, first row is header",
+    "JsonProcessor: use json.load() to read data"
+]
+
+[[exercises]]
+name = "get_winner"
+path = "exercises/02_medium/get_winner.py"
+category = "2d_arrays"
+difficulty = "medium"
+description = "Determine the winner of a Tic-Tac-Toe game"
+hints = [
+    "Check all rows, columns, and both diagonals",
+    "A winner has N consecutive cells with the same mark",
+    "Return 'draw' if board is full with no winner, None if game ongoing"
+]
+
+# =============================================================================
+# HARD EXERCISES (8 total)
+# =============================================================================
+
+[[exercises]]
+name = "simplify_fraction"
+path = "exercises/03_hard/simplify_fraction.py"
+category = "math"
+difficulty = "hard"
+description = "Simplify a fraction to its lowest terms"
+hints = [
+    "Find the Greatest Common Divisor (GCD) of numerator and denominator",
+    "Divide both by the GCD",
+    "You can use Euclid's algorithm or math.gcd()"
+]
+
+[[exercises]]
+name = "is_sudoku_board_valid"
+path = "exercises/03_hard/is_sudoku_board_valid.py"
+category = "2d_arrays"
+difficulty = "hard"
+description = "Validate if a Sudoku board configuration is valid"
+hints = [
+    "Check each row has no duplicate digits (1-9)",
+    "Check each column has no duplicate digits",
+    "Check each 3x3 box has no duplicate digits"
+]
+
+[[exercises]]
+name = "is_magic_square"
+path = "exercises/03_hard/is_magic_square.py"
+category = "2d_arrays"
+difficulty = "hard"
+description = "Check if a matrix is a magic square"
+hints = [
+    "All numbers 1 to N^2 must appear exactly once",
+    "Sum of each row, column, and diagonal must be equal",
+    "Calculate expected sum: N*(N^2+1)/2"
+]
+
+[[exercises]]
+name = "can_exit_maze"
+path = "exercises/03_hard/can_exit_maze.py"
+category = "graphs"
+difficulty = "hard"
+description = "Find if there's a path from entrance to exit in a maze"
+hints = [
+    "Use BFS or DFS to explore the maze",
+    "0 is walkable, 1 is a wall",
+    "Track visited cells to avoid infinite loops"
+]
+
+[[exercises]]
+name = "rotate_matrix"
+path = "exercises/03_hard/rotate_matrix.py"
+category = "2d_arrays"
+difficulty = "hard"
+description = "Rotate an NxN matrix 90 degrees clockwise in-place"
+hints = [
+    "First transpose the matrix (swap rows and columns)",
+    "Then reverse each row",
+    "Do this in-place without creating a new matrix"
+]
+
+[[exercises]]
+name = "count_islands"
+path = "exercises/03_hard/count_islands.py"
+category = "graphs"
+difficulty = "hard"
+description = "Count the number of islands in a grid"
+hints = [
+    "An island is a group of connected '1's",
+    "Use DFS or BFS to mark all connected land as visited",
+    "Each new unvisited '1' starts a new island"
+]
+
+[[exercises]]
+name = "can_segment"
+path = "exercises/03_hard/can_segment.py"
+category = "dynamic_programming"
+difficulty = "hard"
+description = "Check if a string can be segmented into dictionary words"
+hints = [
+    "Use dynamic programming: dp[i] = can s[0:i] be segmented?",
+    "For each position, check all possible word endings",
+    "dp[i] is True if dp[j] is True and s[j:i] is in word_set"
+]
+
+[[exercises]]
+name = "tictactoe_game"
+path = "exercises/03_hard/tictactoe_game.py"
+category = "oop"
+difficulty = "hard"
+description = "Implement a TicTacToe game class with move validation"
+hints = [
+    "Track current player and switch after each valid move",
+    "Raise ValueError for out-of-bounds or occupied cells",
+    "Reuse get_winner logic to check game state"
+]

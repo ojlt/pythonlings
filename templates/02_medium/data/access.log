@@ -1,0 +1,13 @@
+[2024-10-27T10:00:00Z] [INFO] Server started
+[2024-10-27T10:00:01Z] [INFO] User login successful: admin
+[2024-10-27T10:00:02Z] [ERROR] Failed to connect to database
+[2024-10-27T10:00:03Z] [WARNING] API rate limit exceeded for 192.168.1.1
+[2024-10-27T10:00:04Z] [ERROR] User login failed: user_xyz
+[2024-10-27T10:00:05Z] [INFO] Data processed successfully
+[2024-10-27T10:00:06Z] [ERROR] Failed to connect to database
+[2024-10-27T10:00:07Z] [ERROR] Disk space low
+[2024-10-27T10:00:08Z] [ERROR] User login failed: user_xyz
+[2024-10-27T10:00:09Z] [WARNING] Deprecated function called: old_api()
+[2024-10-27T10:00:10Z] [ERROR] Failed to connect to database
+[2024-10-27T10:00:11Z] [ERROR] Null pointer exception at com.example.Module:42
+[2024-10-27T10:00:12Z] [INFO] Server shutting down

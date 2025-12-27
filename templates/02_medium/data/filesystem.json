@@ -1,0 +1,17 @@
+{
+    "name": "/",
+    "type": "directory",
+    "children": [
+        {"name": "home", "type": "directory", "children": [
+            {"name": "user", "type": "directory", "children": [
+                {"name": "profile.txt", "type": "file"},
+                {"name": "docs", "type": "directory", "children": [
+                    {"name": "report.pdf", "type": "file"},
+                    {"name": "notes.txt", "type": "file"}
+                ]}
+            ]}
+        ]},
+        {"name": "README.md", "type": "file"},
+        {"name": "system.log", "type": "file"}
+    ]
+}
