@@ -1,10 +1,28 @@
 """Rich console output formatting."""
 
+from collections import defaultdict
+
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 
 from .exercise import Exercise, ExerciseResult
+
+# Display names for difficulty levels
+DIFFICULTY_DISPLAY = {
+    "easy": ("Easy", "green"),
+    "medium": ("Medium", "yellow"),
+    "hard": ("Hard", "red"),
+    "leetcode_easy": ("LeetCode Easy", "cyan"),
+    "leetcode_medium": ("LeetCode Medium", "blue"),
+    "leetcode_hard": ("LeetCode Hard", "magenta"),
+}
+
+# Order for displaying difficulty groups
+DIFFICULTY_ORDER = [
+    "easy", "medium", "hard",
+    "leetcode_easy", "leetcode_medium", "leetcode_hard"
+]
 
 
 def create_console() -> Console:
@@ -74,13 +92,12 @@ def display_hint(console: Console, exercise: Exercise, hint_index: int) -> None:
         console.print("[yellow]No more hints available![/]")
 
 
-def display_progress(console: Console, completed: int, total: int) -> None:
-    """Display overall progress."""
+def display_progress(console: Console, completed: int, total: int, bar_width: int = 30) -> str:
+    """Generate a progress bar string."""
     percentage = (completed / total * 100) if total > 0 else 0
-    bar_width = 30
     filled = int(bar_width * completed / total) if total > 0 else 0
     bar = "█" * filled + "░" * (bar_width - filled)
-    console.print(f"\nProgress: [{bar}] {completed}/{total} ({percentage:.0f}%)")
+    return f"[{bar}] {completed}/{total} ({percentage:.0f}%)"
 
 
 def display_exercise_list(
@@ -89,19 +106,45 @@ def display_exercise_list(
     completed: int,
     total: int
 ) -> None:
-    """Display table of all exercises."""
-    table = Table(title="Exercises")
-    table.add_column("#", width=4)
-    table.add_column("Name", style="cyan")
-    table.add_column("Category", style="magenta")
-    table.add_column("Status", justify="center")
+    """Display exercises grouped by difficulty in compact format."""
+    # Group exercises by difficulty
+    groups = defaultdict(list)
+    for ex in exercises:
+        groups[ex.difficulty].append(ex)
 
-    for i, ex in enumerate(exercises, 1):
-        status = "[green]✓ Done[/]" if ex.is_complete() else "[yellow]○ Pending[/]"
-        table.add_row(str(i), ex.name, ex.category, status)
+    # Display each group
+    for difficulty in DIFFICULTY_ORDER:
+        if difficulty not in groups:
+            continue
 
-    console.print(table)
-    display_progress(console, completed, total)
+        group_exercises = groups[difficulty]
+        group_completed = sum(1 for ex in group_exercises if ex.is_complete())
+        group_total = len(group_exercises)
+
+        # Get display name and color
+        display_name, color = DIFFICULTY_DISPLAY.get(difficulty, (difficulty.title(), "white"))
+
+        # Section header with compact progress
+        console.print(f"\n[bold {color}]{display_name}[/] ({group_completed}/{group_total})")
+
+        # Compact exercise list - multiple per line
+        term_width = console.width or 80
+        col_width = 38
+        cols = max(1, term_width // col_width)
+
+        for i in range(0, len(group_exercises), cols):
+            row_exercises = group_exercises[i:i + cols]
+            parts = []
+            for ex in row_exercises:
+                status = "[green]✓[/]" if ex.is_complete() else "[dim]○[/]"
+                # Truncate and pad name to fixed width for alignment
+                name = ex.name[:30] if len(ex.name) > 30 else ex.name
+                name_padded = name.ljust(32)
+                parts.append(f"{status} [cyan]{name_padded}[/]")
+            console.print("  " + "".join(parts))
+
+    # Overall progress
+    console.print(f"\n[bold]Total:[/] {display_progress(console, completed, total)}")
 
 
 def display_welcome(console: Console) -> None:
@@ -120,13 +163,54 @@ def display_welcome(console: Console) -> None:
     ))
 
 
-def display_watch_header(console: Console, exercise: Exercise, completed: int, total: int) -> None:
-    """Display watch mode header."""
+def display_watch_header(
+    console: Console,
+    exercise: Exercise,
+    completed: int,
+    total: int,
+    exercises: list[Exercise] | None = None
+) -> None:
+    """Display watch mode header with grouped progress."""
+    # Get difficulty display info
+    display_name, color = DIFFICULTY_DISPLAY.get(
+        exercise.difficulty, (exercise.difficulty.title(), "white")
+    )
+
+    # Build progress info
+    progress_lines = []
+
+    if exercises:
+        # Group progress
+        groups = defaultdict(list)
+        for ex in exercises:
+            groups[ex.difficulty].append(ex)
+
+        for difficulty in DIFFICULTY_ORDER:
+            if difficulty not in groups:
+                continue
+            group_exercises = groups[difficulty]
+            group_completed = sum(1 for ex in group_exercises if ex.is_complete())
+            group_total = len(group_exercises)
+            diff_name, diff_color = DIFFICULTY_DISPLAY.get(difficulty, (difficulty.title(), "white"))
+
+            if difficulty == exercise.difficulty:
+                # Highlight current group
+                progress_lines.append(
+                    f"[bold {diff_color}]► {diff_name}: {group_completed}/{group_total}[/]"
+                )
+            else:
+                progress_lines.append(
+                    f"[dim]  {diff_name}: {group_completed}/{group_total}[/]"
+                )
+
+    progress_text = "\n".join(progress_lines) if progress_lines else f"{completed}/{total}"
+
     console.print(Panel(
-        f"[bold]Current exercise:[/] {exercise.name}\n"
+        f"[bold]Exercise:[/] {exercise.name}\n"
+        f"[bold]Difficulty:[/] [{color}]{display_name}[/]\n"
         f"[bold]Category:[/] {exercise.category}\n"
-        f"[bold]Status:[/] {'[green]Done[/]' if exercise.is_complete() else '[yellow]Pending[/]'}\n"
-        f"[bold]Progress:[/] {completed}/{total} exercises completed",
+        f"[bold]Status:[/] {'[green]Done[/]' if exercise.is_complete() else '[yellow]Pending[/]'}\n\n"
+        f"[bold]Progress:[/]\n{progress_text}",
         title="[bold blue]Watch Mode[/]",
         border_style="blue"
     ))

@@ -16,9 +16,10 @@ from .runner import ExerciseRunner
 from .state import ProgressTracker
 from .terminal import (
     create_console,
-    display_progress,
     display_result,
     display_watch_header,
+    DIFFICULTY_DISPLAY,
+    DIFFICULTY_ORDER,
 )
 
 
@@ -53,7 +54,7 @@ class WatchMode:
         sys.stdout.write('\033[2J\033[H')
         sys.stdout.flush()
 
-        display_watch_header(self.console, exercise, completed, len(self.exercises))
+        display_watch_header(self.console, exercise, completed, len(self.exercises), self.exercises)
         self.console.print()
 
         # Show exercise status
@@ -70,19 +71,105 @@ class WatchMode:
         # Navigation help
         self.console.print("n=next  p=prev  l=list  r=run  q=quit")
 
-    def _show_list(self) -> None:
-        """Show list of all exercises."""
-        sys.stdout.write('\033[2J\033[H')
+    def _render_list(self, browse_index: int) -> None:
+        """Render the exercise list with current browse position."""
+        from collections import defaultdict
+
+        # Move cursor home without clearing (prevents flash)
+        sys.stdout.write('\033[H')
         sys.stdout.flush()
 
-        self.console.print("[bold]Exercises[/]\n")
+        self.console.print("[bold]Exercises[/] [dim](j/k to browse, Enter to select, q to cancel)[/]")
 
+        # Group exercises by difficulty
+        groups = defaultdict(list)
         for i, ex in enumerate(self.exercises):
-            marker = "[bold cyan]>[/] " if i == self.current_index else "  "
-            status = "[green]DONE[/]" if ex.is_complete() else "[yellow]TODO[/]"
-            self.console.print(f"{marker}{status} {ex.name}")
+            groups[ex.difficulty].append((i, ex))
 
-        self.console.print("\nPress any key to return...")
+        # Display each group in compact format
+        term_width = self.console.width or 80
+        col_width = 38
+        cols = max(1, term_width // col_width)
+
+        for difficulty in DIFFICULTY_ORDER:
+            if difficulty not in groups:
+                continue
+
+            group_exercises = groups[difficulty]
+            group_completed = sum(1 for _, ex in group_exercises if ex.is_complete())
+            group_total = len(group_exercises)
+
+            display_name, color = DIFFICULTY_DISPLAY.get(difficulty, (difficulty.title(), "white"))
+            self.console.print(f"\n[bold {color}]{display_name}[/] ({group_completed}/{group_total})")
+
+            # Compact multi-column display
+            for row_start in range(0, len(group_exercises), cols):
+                row = group_exercises[row_start:row_start + cols]
+                parts = []
+                for i, ex in row:
+                    is_selected = (i == browse_index)
+                    status = "[green]✓[/]" if ex.is_complete() else "[dim]○[/]"
+                    name = ex.name[:28] if len(ex.name) > 28 else ex.name
+                    if is_selected:
+                        parts.append(f"[bold reverse]  {status} {name.ljust(28)}[/]")
+                    else:
+                        parts.append(f"  {status} [cyan]{name.ljust(28)}[/]")
+                self.console.print("  " + "".join(parts))
+
+    def _show_list(self) -> None:
+        """Interactive list browser."""
+        browse_index = self.current_index
+        needs_redraw = True
+
+        # Hide cursor and clear screen once at start
+        sys.stdout.write('\033[?25l\033[2J')
+        sys.stdout.flush()
+
+        try:
+            while True:
+                if needs_redraw:
+                    self._render_list(browse_index)
+                    needs_redraw = False
+
+                # Wait for key input (blocking with timeout)
+                if select.select([sys.stdin], [], [], 0.1)[0]:
+                    key = sys.stdin.read(1)
+
+                    # Handle arrow keys (escape sequences)
+                    if key == '\x1b':
+                        # Read the rest of escape sequence
+                        if select.select([sys.stdin], [], [], 0.05)[0]:
+                            seq = sys.stdin.read(2)
+                            if seq == '[A':  # Up arrow
+                                key = 'k'
+                            elif seq == '[B':  # Down arrow
+                                key = 'j'
+                            else:
+                                # Escape key alone - cancel
+                                break
+
+                    old_index = browse_index
+
+                    if key in ('j', 'n'):  # Down/next
+                        browse_index = min(browse_index + 1, len(self.exercises) - 1)
+                    elif key in ('k', 'p'):  # Up/prev
+                        browse_index = max(browse_index - 1, 0)
+                    elif key == '\r' or key == '\n':  # Enter - select
+                        self.current_index = browse_index
+                        self.last_result = None
+                        break
+                    elif key == 'q':  # q - cancel
+                        break
+
+                    # Only redraw if index changed
+                    if browse_index != old_index:
+                        needs_redraw = True
+        finally:
+            # Restore cursor
+            sys.stdout.write('\033[?25h')
+            sys.stdout.flush()
+
+        self._refresh_display(show_result=False)
 
     def _go_next(self) -> None:
         """Move to next exercise."""
@@ -186,17 +273,10 @@ class WatchMode:
 
             self._refresh_display(show_result=False)
 
-            in_list_view = False
-
             while True:
                 # Check for keyboard input (non-blocking)
                 if select.select([sys.stdin], [], [], 0.1)[0]:
                     key = sys.stdin.read(1)
-
-                    if in_list_view:
-                        in_list_view = False
-                        self._refresh_display()
-                        continue
 
                     if key == 'q':
                         break
@@ -205,7 +285,6 @@ class WatchMode:
                     elif key == 'p':
                         self._go_prev()
                     elif key == 'l':
-                        in_list_view = True
                         self._show_list()
                     elif key == 'r':
                         self._run_current()
