@@ -372,3 +372,375 @@ hints = [
     "Raise ValueError for out-of-bounds or occupied cells",
     "Reuse get_winner logic to check game state"
 ]
+
+# =============================================================================
+# LEETCODE EASY (10 total)
+# =============================================================================
+
+[[exercises]]
+name = "two_sum"
+path = "exercises/04_leetcode_easy/two_sum.py"
+category = "arrays"
+difficulty = "leetcode_easy"
+description = "LeetCode #1: Find two numbers that add up to target"
+hints = [
+    "Use a hashmap to store numbers you've seen",
+    "For each number, check if (target - number) exists in the map",
+    "Return indices, not the numbers themselves"
+]
+
+[[exercises]]
+name = "valid_parentheses"
+path = "exercises/04_leetcode_easy/valid_parentheses.py"
+category = "stacks"
+difficulty = "leetcode_easy"
+description = "LeetCode #20: Check if parentheses string is valid"
+hints = [
+    "Use a stack to track opening brackets",
+    "When you see a closing bracket, check if it matches the top of stack",
+    "At the end, the stack should be empty"
+]
+
+[[exercises]]
+name = "best_time_to_buy_sell_stock"
+path = "exercises/04_leetcode_easy/best_time_to_buy_sell_stock.py"
+category = "arrays"
+difficulty = "leetcode_easy"
+description = "LeetCode #121: Find maximum profit from buying and selling stock"
+hints = [
+    "Track the minimum price seen so far",
+    "At each price, calculate profit if you sold today",
+    "Keep track of the maximum profit"
+]
+
+[[exercises]]
+name = "valid_palindrome"
+path = "exercises/04_leetcode_easy/valid_palindrome.py"
+category = "strings"
+difficulty = "leetcode_easy"
+description = "LeetCode #125: Check if string is palindrome (alphanumeric only)"
+hints = [
+    "Use isalnum() to filter alphanumeric characters",
+    "Convert to lowercase for comparison",
+    "Two pointers from start and end work well"
+]
+
+[[exercises]]
+name = "single_number"
+path = "exercises/04_leetcode_easy/single_number.py"
+category = "bit_manipulation"
+difficulty = "leetcode_easy"
+description = "LeetCode #136: Find the number that appears only once"
+hints = [
+    "XOR of a number with itself is 0",
+    "XOR of a number with 0 is the number itself",
+    "XOR all numbers together"
+]
+
+[[exercises]]
+name = "majority_element"
+path = "exercises/04_leetcode_easy/majority_element.py"
+category = "arrays"
+difficulty = "leetcode_easy"
+description = "LeetCode #169: Find element appearing more than n/2 times"
+hints = [
+    "You can use a hashmap to count occurrences",
+    "Or use Boyer-Moore Voting Algorithm for O(1) space",
+    "The majority element always exists in this problem"
+]
+
+[[exercises]]
+name = "contains_duplicate"
+path = "exercises/04_leetcode_easy/contains_duplicate.py"
+category = "arrays"
+difficulty = "leetcode_easy"
+description = "LeetCode #217: Check if array contains any duplicates"
+hints = [
+    "A set only contains unique elements",
+    "Compare length of set vs original array",
+    "Or iterate and check if element already in set"
+]
+
+[[exercises]]
+name = "missing_number"
+path = "exercises/04_leetcode_easy/missing_number.py"
+category = "math"
+difficulty = "leetcode_easy"
+description = "LeetCode #268: Find the missing number in range [0, n]"
+hints = [
+    "Sum of 0 to n is n*(n+1)/2",
+    "Subtract actual sum from expected sum",
+    "Or use XOR: XOR all indices and all numbers"
+]
+
+[[exercises]]
+name = "move_zeroes"
+path = "exercises/04_leetcode_easy/move_zeroes.py"
+category = "arrays"
+difficulty = "leetcode_easy"
+description = "LeetCode #283: Move all zeros to end, maintain order"
+hints = [
+    "Use two pointers: one for current position, one for non-zero position",
+    "Move non-zero elements forward",
+    "Fill remaining positions with zeros"
+]
+
+[[exercises]]
+name = "climbing_stairs"
+path = "exercises/04_leetcode_easy/climbing_stairs.py"
+category = "dynamic_programming"
+difficulty = "leetcode_easy"
+description = "LeetCode #70: Count ways to climb n stairs (1 or 2 steps)"
+hints = [
+    "This is the Fibonacci sequence",
+    "dp[i] = dp[i-1] + dp[i-2]",
+    "Base cases: dp[1] = 1, dp[2] = 2"
+]
+
+# =============================================================================
+# LEETCODE MEDIUM (15 total)
+# =============================================================================
+
+[[exercises]]
+name = "three_sum"
+path = "exercises/05_leetcode_medium/three_sum.py"
+category = "arrays"
+difficulty = "leetcode_medium"
+description = "LeetCode #15: Find all triplets that sum to zero"
+hints = [
+    "Sort the array first",
+    "Fix one number, then use two pointers for the other two",
+    "Skip duplicates to avoid duplicate triplets"
+]
+
+[[exercises]]
+name = "container_with_most_water"
+path = "exercises/05_leetcode_medium/container_with_most_water.py"
+category = "two_pointers"
+difficulty = "leetcode_medium"
+description = "LeetCode #11: Find two lines that form container with most water"
+hints = [
+    "Use two pointers at the ends",
+    "Area = min(height[left], height[right]) * (right - left)",
+    "Move the pointer pointing to the shorter line"
+]
+
+[[exercises]]
+name = "longest_substring_without_repeating"
+path = "exercises/05_leetcode_medium/longest_substring_without_repeating.py"
+category = "sliding_window"
+difficulty = "leetcode_medium"
+description = "LeetCode #3: Find length of longest substring without repeating chars"
+hints = [
+    "Use a sliding window with a set",
+    "Expand window by adding characters on the right",
+    "Shrink window from left when duplicate found"
+]
+
+[[exercises]]
+name = "jump_game"
+path = "exercises/05_leetcode_medium/jump_game.py"
+category = "greedy"
+difficulty = "leetcode_medium"
+description = "LeetCode #55: Can you reach the last index?"
+hints = [
+    "Track the farthest position you can reach",
+    "At each position, update max reach",
+    "If current position > max reach, return False"
+]
+
+[[exercises]]
+name = "unique_paths"
+path = "exercises/05_leetcode_medium/unique_paths.py"
+category = "dynamic_programming"
+difficulty = "leetcode_medium"
+description = "LeetCode #62: Count unique paths in m x n grid"
+hints = [
+    "dp[i][j] = number of ways to reach cell (i,j)",
+    "dp[i][j] = dp[i-1][j] + dp[i][j-1]",
+    "First row and column are all 1s"
+]
+
+[[exercises]]
+name = "minimum_path_sum"
+path = "exercises/05_leetcode_medium/minimum_path_sum.py"
+category = "dynamic_programming"
+difficulty = "leetcode_medium"
+description = "LeetCode #64: Find path with minimum sum in grid"
+hints = [
+    "dp[i][j] = minimum sum to reach cell (i,j)",
+    "dp[i][j] = grid[i][j] + min(dp[i-1][j], dp[i][j-1])",
+    "Handle first row and column specially"
+]
+
+[[exercises]]
+name = "set_matrix_zeroes"
+path = "exercises/05_leetcode_medium/set_matrix_zeroes.py"
+category = "2d_arrays"
+difficulty = "leetcode_medium"
+description = "LeetCode #73: Set entire row and column to zero if element is zero"
+hints = [
+    "First pass: mark which rows and columns need to be zeroed",
+    "Use first row/column as markers for O(1) extra space",
+    "Second pass: set the zeros"
+]
+
+[[exercises]]
+name = "product_except_self"
+path = "exercises/05_leetcode_medium/product_except_self.py"
+category = "arrays"
+difficulty = "leetcode_medium"
+description = "LeetCode #238: Product of array except self, no division"
+hints = [
+    "Use prefix products (products of all elements before i)",
+    "Use suffix products (products of all elements after i)",
+    "Result[i] = prefix[i] * suffix[i]"
+]
+
+[[exercises]]
+name = "coin_change"
+path = "exercises/05_leetcode_medium/coin_change.py"
+category = "dynamic_programming"
+difficulty = "leetcode_medium"
+description = "LeetCode #322: Minimum coins needed to make amount"
+hints = [
+    "dp[i] = minimum coins to make amount i",
+    "For each amount, try all coin denominations",
+    "dp[i] = min(dp[i], dp[i - coin] + 1)"
+]
+
+[[exercises]]
+name = "house_robber"
+path = "exercises/05_leetcode_medium/house_robber.py"
+category = "dynamic_programming"
+difficulty = "leetcode_medium"
+description = "LeetCode #198: Max money robbing non-adjacent houses"
+hints = [
+    "dp[i] = max money robbing houses 0 to i",
+    "Either rob house i or skip it",
+    "dp[i] = max(dp[i-1], dp[i-2] + nums[i])"
+]
+
+[[exercises]]
+name = "longest_increasing_subsequence"
+path = "exercises/05_leetcode_medium/longest_increasing_subsequence.py"
+category = "dynamic_programming"
+difficulty = "leetcode_medium"
+description = "LeetCode #300: Find length of longest increasing subsequence"
+hints = [
+    "dp[i] = length of LIS ending at index i",
+    "For each i, check all j < i where nums[j] < nums[i]",
+    "dp[i] = max(dp[j] + 1) for all valid j"
+]
+
+[[exercises]]
+name = "spiral_matrix"
+path = "exercises/05_leetcode_medium/spiral_matrix.py"
+category = "2d_arrays"
+difficulty = "leetcode_medium"
+description = "LeetCode #54: Return elements in spiral order"
+hints = [
+    "Track boundaries: top, bottom, left, right",
+    "Go right, then down, then left, then up",
+    "Shrink boundaries after each direction"
+]
+
+[[exercises]]
+name = "rotate_image"
+path = "exercises/05_leetcode_medium/rotate_image.py"
+category = "2d_arrays"
+difficulty = "leetcode_medium"
+description = "LeetCode #48: Rotate matrix 90 degrees clockwise in-place"
+hints = [
+    "First transpose: swap matrix[i][j] with matrix[j][i]",
+    "Then reverse each row",
+    "This achieves 90-degree clockwise rotation"
+]
+
+[[exercises]]
+name = "valid_sudoku"
+path = "exercises/05_leetcode_medium/valid_sudoku.py"
+category = "2d_arrays"
+difficulty = "leetcode_medium"
+description = "LeetCode #36: Check if Sudoku board is valid"
+hints = [
+    "Use sets to track seen numbers in rows, columns, boxes",
+    "Box index = (row // 3) * 3 + (col // 3)",
+    "Only check filled cells, ignore '.'"
+]
+
+[[exercises]]
+name = "search_rotated_sorted_array"
+path = "exercises/05_leetcode_medium/search_rotated_sorted_array.py"
+category = "binary_search"
+difficulty = "leetcode_medium"
+description = "LeetCode #33: Search in rotated sorted array in O(log n)"
+hints = [
+    "Modified binary search",
+    "One half is always sorted",
+    "Determine which half target is in"
+]
+
+# =============================================================================
+# LEETCODE HARD (5 total)
+# =============================================================================
+
+[[exercises]]
+name = "trapping_rain_water"
+path = "exercises/06_leetcode_hard/trapping_rain_water.py"
+category = "two_pointers"
+difficulty = "leetcode_hard"
+description = "LeetCode #42: Calculate trapped rain water"
+hints = [
+    "Water at each position = min(max_left, max_right) - height",
+    "Use two pointers from both ends",
+    "Track max height seen from each side"
+]
+
+[[exercises]]
+name = "longest_valid_parentheses"
+path = "exercises/06_leetcode_hard/longest_valid_parentheses.py"
+category = "stacks"
+difficulty = "leetcode_hard"
+description = "LeetCode #32: Find longest valid parentheses substring"
+hints = [
+    "Use a stack to track indices of '('",
+    "Push -1 initially as base for length calculation",
+    "When valid pair found, length = current index - stack top"
+]
+
+[[exercises]]
+name = "first_missing_positive"
+path = "exercises/06_leetcode_hard/first_missing_positive.py"
+category = "arrays"
+difficulty = "leetcode_hard"
+description = "LeetCode #41: Find smallest missing positive integer"
+hints = [
+    "Answer must be in range [1, n+1]",
+    "Use the array itself as a hash map",
+    "Place each number at its correct index: nums[i] at index nums[i]-1"
+]
+
+[[exercises]]
+name = "longest_consecutive_sequence"
+path = "exercises/06_leetcode_hard/longest_consecutive_sequence.py"
+category = "hashmaps"
+difficulty = "leetcode_hard"
+description = "LeetCode #128: Find longest consecutive sequence in O(n)"
+hints = [
+    "Use a set for O(1) lookups",
+    "Only start counting from sequence starts (num-1 not in set)",
+    "Count consecutive numbers from each start"
+]
+
+[[exercises]]
+name = "maximum_subarray"
+path = "exercises/06_leetcode_hard/maximum_subarray.py"
+category = "dynamic_programming"
+difficulty = "leetcode_hard"
+description = "LeetCode #53: Find contiguous subarray with largest sum"
+hints = [
+    "Kadane's algorithm: track current sum and max sum",
+    "current_sum = max(num, current_sum + num)",
+    "Reset current sum when it becomes negative"
+]
