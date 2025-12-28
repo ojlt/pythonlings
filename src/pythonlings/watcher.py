@@ -16,6 +16,7 @@ from .runner import ExerciseRunner
 from .state import ProgressTracker
 from .terminal import (
     create_console,
+    display_hint,
     display_result,
     display_watch_header,
     DIFFICULTY_DISPLAY,
@@ -76,7 +77,7 @@ class WatchMode:
             self.console.print()
 
         # Navigation help
-        self.console.print("n=next  p=prev  l=list  r=run  q=quit")
+        self.console.print("n=next  p=prev  l=list  h=hint  r=run  q=quit")
 
     def _render_list(self, browse_index: int) -> None:
         """Render the exercise list with current browse position."""
@@ -204,6 +205,18 @@ class WatchMode:
 
         self._refresh_display()
 
+    def _show_hint(self) -> None:
+        """Show the next hint for the current exercise."""
+        exercise = self._get_current_exercise()
+        hint_index = self.tracker.get_hints_viewed(exercise.name)
+
+        if hint_index >= len(exercise.hints):
+            self.console.print("\n[yellow]No more hints available![/]")
+        else:
+            self.console.print()
+            display_hint(self.console, exercise, hint_index)
+            self.tracker.record_hint_viewed(exercise.name)
+
     def _handle_file_change(self, path: Path) -> None:
         """Handle a file change event."""
         with self.lock:
@@ -317,6 +330,8 @@ class WatchMode:
                         self._go_prev()
                     elif key == 'l':
                         self._show_list()
+                    elif key == 'h':
+                        self._show_hint()
                     elif key == 'r':
                         self._run_current()
 

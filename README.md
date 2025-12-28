@@ -1,52 +1,47 @@
 # Pythonlings
 
-
-Pythonlings is a CLI tool inspired by [rustlings](https://rustlings.rust-lang.org/) that helps you practice Python through hands-on coding exercises.
+Learn Python by solving exercises - inspired by [rustlings](https://rustlings.rust-lang.org/)!
 
 ## Installation
 
 ```bash
-pip install pythonlings
+git clone https://github.com/ojlt/pythonlings.git
+cd pythonlings
+pip install .
 ```
 
 ## Usage
 
-### Run the next pending exercise
 ```bash
-pythonlings run
+pythonlings
 ```
 
-### Watch mode (auto-run on save, recommended)
-```bash
-pythonlings watch
-```
+That's it! On first run, exercise files are automatically created from templates.
 
-### Get a hint
-```bash
-pythonlings hint
-```
+### Controls
 
-### List all exercises
-```bash
-pythonlings list
-```
+| Key | Action |
+|-----|--------|
+| `n` | Next exercise |
+| `p` | Previous exercise |
+| `l` | List all exercises |
+| `h` | Show hint |
+| `r` | Run tests |
+| `q` | Quit |
 
 ### Reset an exercise
+
 ```bash
 pythonlings reset <exercise_name>
-```
-
-### Verify all exercises
-```bash
-pythonlings verify
+pythonlings reset --all
 ```
 
 ## How It Works
 
-1. Each exercise file contains a problem description and failing tests
-2. Edit the exercise file to implement the solution
-3. Tests run automatically when you save (in watch mode)
-
+1. Each exercise has a `# I AM NOT DONE` marker at the top
+2. Edit the file to implement the solution
+3. Tests run automatically when you save
+4. Remove the marker when you're done - progress auto-saves
 
 ## License
 
