@@ -42,6 +42,13 @@ class WatchMode:
         """Get the current exercise."""
         return self.exercises[self.current_index]
 
+    def _find_exercise_by_path(self, path: Path) -> Exercise | None:
+        """Find which exercise a file path belongs to."""
+        for ex in self.exercises:
+            if path == ex.path.resolve():
+                return ex
+        return None
+
     def _count_completed(self) -> int:
         """Count completed exercises."""
         return sum(1 for ex in self.exercises if ex.is_complete())
@@ -208,13 +215,34 @@ class WatchMode:
             if path.suffix != ".py":
                 return
 
-            # Check if this file matches the current exercise
-            exercise = self._get_current_exercise()
-            if path != exercise.path.resolve():
+            # Find which exercise this file belongs to
+            exercise = self._find_exercise_by_path(path)
+            if not exercise:
                 return
 
-            # Run the exercise
-            self._run_current()
+            # Run tests for that exercise
+            result = self.runner.run(exercise)
+            self.tracker.record_attempt(exercise.name)
+
+            if result.success:
+                exercise.mark_complete()
+                self.tracker.mark_complete(exercise.name)
+
+            # Update display based on whether this is the current exercise
+            current = self._get_current_exercise()
+            if exercise.name == current.name:
+                self.last_result = result
+                self._refresh_display()
+            else:
+                # Just refresh to update completion count
+                self._refresh_display(show_result=True)
+
+    def _sync_completion_state(self) -> None:
+        """Scan for exercises completed while app was offline."""
+        for exercise in self.exercises:
+            # If marker removed but not marked complete in state, trust the marker
+            if exercise.is_complete() and not self.tracker.is_complete(exercise.name):
+                self.tracker.mark_complete(exercise.name)
 
     def start(self) -> None:
         """Start watching for file changes."""
@@ -225,6 +253,9 @@ class WatchMode:
                 "Make sure exercises.toml exists.[/]"
             )
             return
+
+        # Sync completion state for exercises completed while app was offline
+        self._sync_completion_state()
 
         # Find first incomplete exercise
         self.current_index = 0
