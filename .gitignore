@@ -28,3 +28,6 @@ htmlcov/
 # OS
 .DS_Store
 Thumbs.db
+
+# Exercise files (user progress shouldn't affect repo status)
+exercises/

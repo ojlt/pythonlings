@@ -1,6 +1,0 @@
-[2024-10-27T11:00:00Z] [INFO] Server started
-[2024-10-27T11:00:01Z] [INFO] User login successful: admin
-[2024-10-27T11:00:03Z] [WARNING] API rate limit exceeded for 192.168.1.1
-[2024-10-27T11:00:05Z] [INFO] Data processed successfully
-[2024-10-27T11:00:09Z] [WARNING] Deprecated function called: old_api()
-[2024-10-27T11:00:12Z] [INFO] Server shutting down
