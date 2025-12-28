@@ -25,7 +25,7 @@ That's it! On first run, exercise files are automatically created from templates
 | `n` | Next exercise |
 | `p` | Previous exercise |
 | `l` | List all exercises |
-| `h` | Show hint |
+| `h`/`H` | Cycle through hints |
 | `r` | Run tests |
 | `q` | Quit |
 

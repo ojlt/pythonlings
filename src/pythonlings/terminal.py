@@ -84,12 +84,6 @@ def display_hint(console: Console, exercise: Exercise, hint_index: int) -> None:
             title=f"[yellow]Hint {hint_index + 1}/{len(exercise.hints)}[/]",
             border_style="yellow"
         ))
-        if hint_index < len(exercise.hints) - 1:
-            console.print(
-                "\nRun 'pythonlings hint' again for the next hint."
-            )
-    else:
-        console.print("[yellow]No more hints available![/]")
 
 
 def display_progress(console: Console, completed: int, total: int, bar_width: int = 30) -> str:

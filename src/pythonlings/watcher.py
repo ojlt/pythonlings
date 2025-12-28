@@ -38,6 +38,7 @@ class WatchMode:
         self.last_result = None
         self.lock = Lock()
         self._last_modified: float = 0
+        self._hints_shown: int = 0  # Number of hints currently displayed
 
     def _get_current_exercise(self) -> Exercise:
         """Get the current exercise."""
@@ -77,7 +78,12 @@ class WatchMode:
             self.console.print()
 
         # Navigation help
-        self.console.print("n=next  p=prev  l=list  h=hint  r=run  q=quit")
+        self.console.print("n=next  p=prev  l=list  h/H=hint  r=run  q=quit")
+
+        # Show current hint if any are revealed (below controls)
+        if self._hints_shown > 0 and self._hints_shown <= len(exercise.hints):
+            self.console.print()
+            display_hint(self.console, exercise, self._hints_shown - 1)
 
     def _render_list(self, browse_index: int) -> None:
         """Render the exercise list with current browse position."""
@@ -165,6 +171,7 @@ class WatchMode:
                     elif key == '\r' or key == '\n':  # Enter - select
                         self.current_index = browse_index
                         self.last_result = None
+                        self._hints_shown = 0
                         break
                     elif key == 'q':  # q - cancel
                         break
@@ -184,6 +191,7 @@ class WatchMode:
         if self.current_index < len(self.exercises) - 1:
             self.current_index += 1
             self.last_result = None
+            self._hints_shown = 0
             self._refresh_display(show_result=False)
 
     def _go_prev(self) -> None:
@@ -191,6 +199,7 @@ class WatchMode:
         if self.current_index > 0:
             self.current_index -= 1
             self.last_result = None
+            self._hints_shown = 0
             self._refresh_display(show_result=False)
 
     def _run_current(self) -> None:
@@ -206,16 +215,20 @@ class WatchMode:
         self._refresh_display()
 
     def _show_hint(self) -> None:
-        """Show the next hint for the current exercise."""
+        """Reveal the next hint."""
         exercise = self._get_current_exercise()
-        hint_index = self.tracker.get_hints_viewed(exercise.name)
+        if self._hints_shown < len(exercise.hints):
+            self._hints_shown += 1
+            # Record if this is a new hint being viewed
+            if self._hints_shown > self.tracker.get_hints_viewed(exercise.name):
+                self.tracker.record_hint_viewed(exercise.name)
+            self._refresh_display()
 
-        if hint_index >= len(exercise.hints):
-            self.console.print("\n[yellow]No more hints available![/]")
-        else:
-            self.console.print()
-            display_hint(self.console, exercise, hint_index)
-            self.tracker.record_hint_viewed(exercise.name)
+    def _hide_hint(self) -> None:
+        """Hide the last revealed hint."""
+        if self._hints_shown > 0:
+            self._hints_shown -= 1
+            self._refresh_display()
 
     def _handle_file_change(self, path: Path) -> None:
         """Handle a file change event."""
@@ -332,6 +345,8 @@ class WatchMode:
                         self._show_list()
                     elif key == 'h':
                         self._show_hint()
+                    elif key == 'H':
+                        self._hide_hint()
                     elif key == 'r':
                         self._run_current()
 
