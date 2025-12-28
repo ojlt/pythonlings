@@ -7,7 +7,7 @@ from typing import Optional
 import typer
 from rich.console import Console
 
-from .config import find_project_root, get_exercise_by_name, get_next_pending_exercise, load_exercises
+from .config import find_project_root, get_exercise_by_name, get_next_pending_exercise, init_exercises, load_exercises
 from .runner import ExerciseRunner
 from .state import ProgressTracker
 from .terminal import (
@@ -36,6 +36,13 @@ def get_project_root() -> Path:
             "Make sure you're in a pythonlings project directory."
         )
         raise typer.Exit(1)
+
+    # Initialize exercises from templates (copies new/missing files only)
+    copied = init_exercises(root)
+    if copied > 0:
+        console = create_console()
+        console.print(f"[green]Initialized {copied} exercise file(s) from templates.[/]\n")
+
     return root
 
 
