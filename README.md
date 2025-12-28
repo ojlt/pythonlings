@@ -41,7 +41,7 @@ pythonlings reset --all
 1. Each exercise has a `# I AM NOT DONE` marker at the top
 2. Edit the file to implement the solution
 3. Tests run automatically when you save
-4. Remove the marker when you're done - progress auto-saves
+4. Market auto removes when correct - progress auto-saves
 
 ## License
 
