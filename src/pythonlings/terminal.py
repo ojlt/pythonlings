@@ -69,11 +69,6 @@ def display_result(console: Console, result: ExerciseResult, verbose: bool = Fal
             if result.error:
                 console.print("\n[bold red]Errors:[/]")
                 console.print(result.error)
-        else:
-            console.print(
-                f"\nRun 'pythonlings run {result.exercise.name}' "
-                "for full error details."
-            )
 
 
 def display_hint(console: Console, exercise: Exercise, hint_index: int) -> None:

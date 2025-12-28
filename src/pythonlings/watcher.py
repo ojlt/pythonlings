@@ -1,6 +1,7 @@
 """File watching using watchdog."""
 
 import select
+import shutil
 import sys
 import termios
 import time
@@ -78,7 +79,7 @@ class WatchMode:
             self.console.print()
 
         # Navigation help
-        self.console.print("n=next  p=prev  l=list  h/H=hint  r=run  q=quit")
+        self.console.print("n=next  p=prev  l=list  h/H=hint  r=run  x=reset  q=quit")
 
         # Show current hint if any are revealed (below controls)
         if self._hints_shown > 0 and self._hints_shown <= len(exercise.hints):
@@ -230,6 +231,22 @@ class WatchMode:
             self._hints_shown -= 1
             self._refresh_display()
 
+    def _reset_current(self) -> None:
+        """Reset the current exercise to its original state."""
+        exercise = self._get_current_exercise()
+        templates_dir = self.project_root / "templates"
+        template_path = templates_dir / exercise.path.relative_to(self.exercises_dir)
+
+        if not template_path.exists():
+            self.console.print(f"[yellow]No template found for '{exercise.name}'[/]")
+            return
+
+        shutil.copy(template_path, exercise.path)
+        self.tracker.mark_incomplete(exercise.name)
+        self.last_result = None
+        self._hints_shown = 0
+        self._refresh_display(show_result=False)
+
     def _handle_file_change(self, path: Path) -> None:
         """Handle a file change event."""
         with self.lock:
@@ -349,6 +366,8 @@ class WatchMode:
                         self._hide_hint()
                     elif key == 'r':
                         self._run_current()
+                    elif key == 'x':
+                        self._reset_current()
 
         except KeyboardInterrupt:
             pass
